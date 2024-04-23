@@ -17,14 +17,14 @@ main {
 .book-card.card {
   max-width: 150px;
   margin: auto;
-  padding: 5px;
-  border: 1px solid transparent;
+  padding: 10px;
+  border: none;
 }
 
 .book-card:hover {
   cursor: pointer;
-  background-color: #f5f5f5;
-  border: 1px solid #f5f5f5;
+  background-color: #caddbe;
+  border: none;
 }
 
 .book-card .card-title {
