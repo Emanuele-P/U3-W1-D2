@@ -1,45 +1,61 @@
-
-import Card from 'react-bootstrap/Card';
-// import exampleImg from '../assets/images/the-deep-sky.jpg'
-import { Col, Container, Row } from 'react-bootstrap';
-import fantasyBooks from '../data/books/fantasy.json'
+import React, { useRef } from 'react';
+// import exampleImg from '../assets/images/the-deep-sky.jpg
+import { Col, Container, Row, Card } from 'react-bootstrap';
 import star from '../assets/images/star.svg'
+import left from '../assets/images/left-arrow.svg'
+import right from '../assets/images/right-arrow.svg'
 
-function AllTheBooks() {
+
+function AllTheBooks({ headerText, booksData }) {
+    const scrollRef = useRef(null)
+
+    const scroll = (direction) => {
+        if(direction === 'left') {
+            scrollRef.current.scrollBy({ left: -1100, behavior: "smooth"})
+        } else {
+            scrollRef.current.scrollBy({ left: 1100, behavior: 'smooth'})
+        }
+    }
+
     return (
-      <Container>
-        <h5 className='mt-4 mb-3 fw-bold fs-3'>Fantasy Books</h5>
+        <Container>
+            <h5 className='mt-4 mb-3 fw-bold fs-3'>{headerText}</h5>
 
-        <Row className='align-items-center justify-content-center row-cols-xs-1 row-cols-md-3 row-cols-lg-6 gap-3 mb-4'>
+            <Row className='mb-4'>
+                <Col xs={12} className="horizontal-scroll-container">
+                <img 
+                        src={left} 
+                        alt="left arrow" 
+                        className="arrow-button left" 
+                        onClick={() => scroll('left')}
+                    />
+                    <div className="horizontal-scroll d-flex" ref={scrollRef} style={{ overflowX: 'auto', whiteSpace: 'nowrap' }}>
+                        {booksData.map((book) => (
+                            <Card className='book-card' key={`book-${book.asin}`} style={{ display: 'inline-block', marginRight: '15px', width: '300px' }}>
+                                <Card.Img className='card-img-top' variant="top" src={book.img}/>
+                                <Card.Body className='card-body'>
+                                    <Card.Title className='card-title'>{book.title}</Card.Title>
+                                    <div className='d-flex align-items-center gap-2'>
+                                        <Card.Text className='card-price'>
+                                            {book.category} • {book.price}$
+                                        </Card.Text>
+                                        <img src={star} alt='star' />
+                                    </div>
+                                </Card.Body>
+                            </Card>
+                        ))}
+                    </div>
+                    <img 
+                        src={right} 
+                        alt="right arrow" 
+                        className="arrow-button right" 
+                        onClick={() => scroll('right')}
+                    />
 
-                {fantasyBooks.map((book, i) => {
-                    return (
-                <Col key={`book-${i}`}>
-                <Card className='book-card'>
-                <Card.Img className='card-img-top' variant="top" src={book.img}/>
-                <Card.Body className='card-body'>
-                    <Card.Title className='card-title'>{book.title}</Card.Title>
-                    <div className='d-flex alig-items-center justify-content-between'>
-                    <div className='d-flex alig-items-center gap-1'>
-                    <img src={star} alt='star' />
-                    <img src={star} alt='star' />
-                    <img src={star} alt='star' />
-                    <img src={star} alt='star' />
-                    <img src={star} alt='star' />
-                    </div>
-                    <Card.Text className='card-price'>
-                    {book.price}$
-                    </Card.Text>
-                    </div>
-                </Card.Body>
-                </Card>
                 </Col>
-                    )
-                })}
-
-        </Row>
-    </Container>
-  );
+            </Row>
+        </Container>
+    );
 }
 
 export default AllTheBooks;
